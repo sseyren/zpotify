@@ -61,7 +61,7 @@
                     <menu-area v-else v-on:click.native="toggleAutoPlay">
                         <p class="son"><i class="fa fa-toggle-off" aria-hidden="true"></i>Otomatik Oynatma: {{ autoPlayStatus }}</p>
                     </menu-area>
-                    <audio controls autoplay preload="false" id="oynatici">
+                    <audio controls autoplay preload="false" id="oynatici" v-on:ended="trackEnded">
                         <source :src="`/storage/contents/${track.id}.mp3`" type="audio/mpeg">
                         Tarayıcınız bu ses dosyasını desteklemmiyor.
                     </audio>
@@ -137,6 +137,10 @@ export default {
             axios.delete(`/api/tracks/${this.track.id}`);
             this.$router.push(`/`);
         }
+    },
+    trackEnded(){
+        if(this.autoPlay)
+            this.goRandomTrack();
     }
   },
   created() {
